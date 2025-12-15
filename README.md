@@ -1,6 +1,7 @@
 ### Local Bike Data
 
 Local Bike wants to have dashboards to analyse their data dans optimize sells and stocks. The dashboards arrives sounner.
+This project can only be modified with new branch and Pull Request.
 
 
 ### Mes réflexions Projet Databird:
