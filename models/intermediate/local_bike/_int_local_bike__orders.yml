@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: int_local_bike__orders
+    description: "Table who is the fusion of orders and order_items of staging."
+    config:
+      cluster_by: ['order_date']
+    columns:
+      - name: product_id
+        description: "Foreign key linking the order to the corresponding product."
+        tests:
+          - relationships:
+              name: product_id_foreign_key_in_int_local_bike__orders
+              to: ref('int_local_bike__products')
+              field: product_id

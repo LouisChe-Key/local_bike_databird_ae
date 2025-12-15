@@ -42,3 +42,8 @@ models:
       local_bike:
         +materialized: view
         +schema: stg
+    # Applies to all files under models/intermediate/
+    intermediate:
+      local_bike:
+        +materialized: view
+        +schema: int
