@@ -15,15 +15,15 @@ models:
   - name: stg_local_bike__categories
     description: "This models contains information about categories."
     columns:
-      - name: customer_id
-        description: "Primary key, unique identifier for each categorie."
+      - name: category_id
+        description: "Primary key, unique identifier for each category."
         tests:
             - unique
             - not_null
       - name: categorie_name
         description: "Name of each categorie."
 
-  - name: stg_local_bike__customer
+  - name: stg_local_bike__customers
     description: "This models contains information about customers."
     columns:
       - name: customer_id
@@ -202,7 +202,7 @@ models:
   - name: stg_local_bike__stores
     description: "This models contains information about stores."
     columns:
-      - name: stores_id
+      - name: store_id
         description: "Primary key, unique identifier for each store."
         tests:
             - unique
