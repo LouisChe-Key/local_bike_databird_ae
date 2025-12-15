@@ -1,3 +1,10 @@
+{{
+  config(
+    materialized = "table"
+  )
+}}
+
+
 SELECT
     staff_id,
     first_name,
