@@ -1,0 +1,217 @@
+version: 2
+
+models:
+  - name: stg_local_bike__brands
+    description: "This model contains information about brands."
+    columns:
+      - name: brand_id
+        description: "Primary key, unique identifier for each brand."
+        tests:
+            - unique
+            - not_null
+      - name: brand_name
+        description: "Name of each brand."
+
+  - name: stg_local_bike__categories
+    description: "This models contains information about categories."
+    columns:
+      - name: customer_id
+        description: "Primary key, unique identifier for each categorie."
+        tests:
+            - unique
+            - not_null
+      - name: categorie_name
+        description: "Name of each categorie."
+
+  - name: stg_local_bike__customer
+    description: "This models contains information about customers."
+    columns:
+      - name: customer_id
+        description: "Primary key, unique identifier for each categorie."
+        tests:
+            - unique
+            - not_null
+      - name: first_name
+        description: "First name of each customer."
+      - name: last_name
+        description: "Last name of each customer."
+      - name: phone
+        description: "Phone number of each customer."
+      - name: email
+        description: "Email name of each customer."
+      - name: adress
+        description: "Adress of each customer."
+
+  - name: stg_local_bike__order_items
+    description: "This models contains information about order items."
+    columns:
+      - name: order_item_id
+        description: "Primary key, unique identifier based of the concatenation of order_id and item_id."
+        tests:
+            - unique
+            - not_null
+      - name: order_id
+        description: "Foreign key linking the order item to the corresponding order."
+        tests:
+          - relationships:
+              name: order_id_foreign_key_in_stg_local_bike__order_items
+              to: ref('stg_local_bike__order')
+              field: order_id
+      - name: item_id
+        description: "Id of the item."
+      - name: product_id
+        description: "Foreign key linking the order item to the corresponding product."
+        tests:
+          - relationships:
+              name: product_id_foreign_key_in_stg_local_bike__order_items
+              to: ref('stg_local_bike__products')
+              field: product_id
+      - name: quantity
+        description: "The quantity of products the order item contains."
+      - name: list_price
+        description: "The price of the product (already have in product table)."
+      - name: discount
+        description: "The discount in % of the order item."
+
+  - name: stg_local_bike__orders
+    description: "This models contains information about orders."
+    columns:
+      - name: order_id
+        description: "Primary key, unique identifier for each order."
+        tests:
+            - unique
+            - not_null
+      - name: customer_id
+        description: "Foreign key linking the order to the corresponding customer."
+        tests:
+          - relationships:
+              name: customer_id_foreign_key_in_stg_local_bike__orders
+              to: ref('stg_local_bike__customer')
+              field: customer_id
+      - name: order_status
+        description: "Status of the order (value between 1 and 4 : 1-vericfication, 2-inprepared, 3-expedeted, 4-terminated)."
+        tests:
+          - accepted_values:
+              name: status_between_1_and_4_in_stg_local_bike__orders
+              arguments:
+                values: [1, 2, 3, 4]
+                quote: false
+      - name: order_date
+        description: "Date which the order was throw."
+      - name: required_date
+        description: "The date where the customer is supposed to have."
+      - name: shipped_date
+        description: "The date where the order is espedited."
+      - name: store_id
+        description: "Foreign key linking the order to the corresponding store."
+        tests:
+          - relationships:
+              name: store_id_foreign_key_in_stg_local_bike__orders
+              to: ref('stg_local_bike__store')
+              field: store_id
+      - name: staff_id
+        description: "Foreign key linking the order to the corresponding staff."
+        tests:
+          - relationships:
+              name: staff_id_foreign_key_in_stg_local_bike__orders
+              to: ref('stg_local_bike__staff')
+              field: staff_id
+
+  - name: stg_local_bike__products
+    description: "This models contains information about products."
+    columns:
+      - name: product_id
+        description: "Primary key, unique identifier for each product."
+        tests:
+            - unique
+            - not_null
+      - name: product_name
+        description: "Name of each product."
+      - name: brand_id
+        description: "Foreign key linking the products to the corresponding brand."
+        tests:
+          - relationships:
+              name: brand_id_foreign_key_in_stg_local_bike__products
+              to: ref('stg_local_bike__brand')
+              field: brand_id
+      - name: category_id
+        description: "Foreign key linking the products to the corresponding category."
+        tests:
+          - relationships:
+              name: category_id_foreign_key_in_stg_local_bike__products
+              to: ref('stg_local_bike__category')
+              field: category_id
+      - name: model_year
+        description: "The year when the product was created."
+      - name: list_price
+        description: "The price of the product."
+
+  - name: stg_local_bike__staffs
+    description: "This models contains information about staffs."
+    columns:
+      - name: staff_id
+        description: "Primary key, unique identifier for each staff."
+        tests:
+            - unique
+            - not_null
+      - name: first_name
+        description: "First name of each staff."
+      - name: last_name
+        description: "Last name of each staff."
+      - name: email
+        description: "Email name of each staff."
+      - name: phone
+        description: "Phone number of each staff."
+      - name: active
+        description: "Is the staff still here (1 for yes and 0 for false)."
+      - name: store_id
+        description: "Foreign key linking the staff to the corresponding store."
+        tests:
+          - relationships:
+              name: store_id_foreign_key_in_stg_local_bike__staffs
+              to: ref('stg_local_bike__store')
+              field: store_id
+      - name: manager_id
+        description: "Foreign key linking the staff to the corresponding staff manager in this same table."
+
+  - name: stg_local_bike__stocks
+    description: "This models contains information about stocks."
+    columns:
+      - name: stocks_id
+        description: "Primary key, unique identifier for each stock."
+        tests:
+            - unique
+            - not_null
+      - name: store_id
+        description: "Foreign key linking the stocks to the corresponding store."
+        tests:
+          - relationships:
+              name: store_id_foreign_key_in_stg_local_bike__stocks
+              to: ref('stg_local_bike__stores')
+              field: store_id
+      - name: product_id
+        description: "Foreign key linking the stocks to the corresponding product."
+        tests:
+          - relationships:
+              name: product_id_foreign_key_in_stg_local_bike__stocks
+              to: ref('stg_local_bike__products')
+              field: product_id
+      - name: quantity
+        description: "Quantity of this product in this store in the stocks."
+
+  - name: stg_local_bike__stores
+    description: "This models contains information about stores."
+    columns:
+      - name: stores_id
+        description: "Primary key, unique identifier for each store."
+        tests:
+            - unique
+            - not_null
+      - name: store_name
+        description: "Name of the store."
+      - name: phone
+        description: "Phone number of each store."
+      - name: email
+        description: "Email name of each store."
+      - name: adress
+        description: "Adress of each store."
